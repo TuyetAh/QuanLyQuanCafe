@@ -21,9 +21,9 @@ namespace QuanLyQuanCafe.DAO
 
         private string connectionSTR = "Data Source = PC\\HUUKY; Initial Catalog = QuanLyQuanCafe; Integrated Security = True";
 
-       
 
-        public DataTable ExecuteQuery( string query, object[] parameter = null)
+
+        public DataTable ExecuteQuery(string query, object[] parameter = null)
         {
             DataTable data = new DataTable();
             using (SqlConnection connection = new SqlConnection(connectionSTR))
@@ -43,10 +43,10 @@ namespace QuanLyQuanCafe.DAO
                         }
                     }
                 }
-                SqlDataAdapter adapter= new SqlDataAdapter(command);
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
                 adapter.Fill(data);
                 connection.Close();
-              
+
             }
             return data;
         }
@@ -72,7 +72,7 @@ namespace QuanLyQuanCafe.DAO
                         }
                     }
                 }
-               data= command.ExecuteNonQuery();
+                data = command.ExecuteNonQuery();
                 connection.Close();
 
             }
