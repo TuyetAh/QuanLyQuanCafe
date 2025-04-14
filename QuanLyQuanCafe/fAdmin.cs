@@ -23,6 +23,9 @@ namespace QuanLyQuanCafe
 
         }
 
-        
+        private void btnViewBill_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

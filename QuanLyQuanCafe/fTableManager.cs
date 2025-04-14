@@ -15,8 +15,18 @@ namespace QuanLyQuanCafe
         public fTableManager()
         {
             InitializeComponent();
+            LoadTable();
         }
 
+        #region Method
+        void LoadTable()
+        {
+
+        }
+
+        #endregion
+
+        #region Events
         private void đăngXuấtToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -33,5 +43,7 @@ namespace QuanLyQuanCafe
             fAdmin f = new fAdmin();
             f.ShowDialog();
         }
+        #endregion
+
     }
 }
