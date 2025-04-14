@@ -249,11 +249,15 @@ VALUES	( 3, -- idBill - int
 		  5, --idFood - int
 		  2  -- count - int
 		 )
+GO
+
+SELECT f.name, bi.count, f.price, f.price*bi.count AS totalPrice FROM dbo.BillInfo AS bi, dbo.Bill AS b, dbo.Food AS f
+WHERE bi.idBill = b.id AND bi.idFood = f.id AND b.status = 0 AND b.idTable = 2
 
 SELECT * FROM dbo.Bill
 SELECT * FROM dbo.BillInfo
 SELECT * FROM dbo.Food
 SELECT * FROM dbo.FoodCategory
-
+GO
 
 

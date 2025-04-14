@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Channels;
 using System.Text;
@@ -51,16 +52,20 @@ namespace QuanLyQuanCafe
         {
             lsvBill.Items.Clear();
             List<DTO.Menu> listBillInfo = MenuDAO.Instance.GetListMenuByTable(id);
-
+            float totalPrice = 0;
             foreach (DTO.Menu item in listBillInfo)
             {
                 ListViewItem lsvItem = new ListViewItem(item.FoodName.ToString());
                 lsvItem.SubItems.Add(item.Count.ToString());
                 lsvItem.SubItems.Add(item.Price.ToString());
                 lsvItem.SubItems.Add(item.TotalPrice.ToString());
+                totalPrice += item.TotalPrice;
 
                 lsvBill.Items.Add(lsvItem);
             }
+            CultureInfo culture = new CultureInfo("vi-VN");
+
+            txbTotalPrice.Text = totalPrice.ToString("c",culture);
         }
 
         #endregion
@@ -68,8 +73,8 @@ namespace QuanLyQuanCafe
         #region Events
         void btn_Click(Object sender, EventArgs e)
         {
-            int tableId= ((sender as Button).Tag as Table).ID;
-            ShowBill(tableId);
+            int tableID = ((sender as Button).Tag as Table).ID;
+            ShowBill(tableID);
         }
         private void đăngXuấtToolStripMenuItem_Click(object sender, EventArgs e)
         {
