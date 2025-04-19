@@ -260,6 +260,13 @@ SELECT * FROM dbo.Food
 SELECT * FROM dbo.FoodCategory
 GO
 
+ALTER TABLE dbo.Bill
+ADD discount INT 
+GO
+
+UPDATE dbo.Bill SET discount = 0
+GO
+
 CREATE PROC USP_INSERTBILL
 @idTable INT
 AS
@@ -284,7 +291,8 @@ BEGIN
 END
 GO
 
-ALTER PROC InsertBillInfo
+--sau khi chạy 1 lần đầu thì sửa create thành alter nghe
+CREATE PROC InsertBillInfo
 @idBill INT, @idFood INT, @count INT
 AS
 BEGIN
@@ -320,6 +328,7 @@ GO
 
 DELETE dbo.BillInfo
 DELETE dbo.Bill
+GO
 
 CREATE TRIGGER UTG_UpdateBillInfo
 ON dbo.BillInfo FOR INSERT, UPDATE 
@@ -373,11 +382,7 @@ BEGIN
 END
 GO
 
-ALTER TABLE dbo.Bill
-ADD discount INT 
 
-UPDATE dbo.Bill SET discount = 0
-GO
 
 
 CREATE PROC USP_SwitchTabel
@@ -480,9 +485,49 @@ GO
 
 EXEC dbo.USP_SwitchTabel @idTable1 = 8,  --int 
 	@idTable2 = 11 --int
+GO
+--vid 15
+ALTER TABLE dbo.Bill ADD totalPrice FLOAT
+
+DELETE dbo.BillInfo
+DELETE dbo.Bill
+GO
 
 
+--sau khi chạy 1 lần đầu thì sửa create thành alter nghe
 
+CREATE PROC USP_GetListBillByDate
+@checkIn date, @checkOut date
+AS
+BEGIN
+    SELECT t.name AS [Tên bàn], b.totalPrice AS [Tổng tiền], DateCheckIn AS [Ngày vào], DateCheckOut AS [Ngày ra], discount AS [Giảm giá]
+    FROM dbo.Bill AS b, dbo.TableFood AS t
+    WHERE DateCheckIn >= @checkIn 
+          AND DateCheckOut <= @checkOut 
+          AND b.status = 1 
+          AND t.id = b.idTable
+END
+GO
+--het vid 15
 
+--vid 16
+CREATE PROC USP_UpdateAccount
+@userName NVARCHAR(100), @displayName NVARCHAR(100), @password NVARCHAR(100), @newPassword NVARCHAR(100)
+AS
+BEGIN
+    DECLARE @isRightPass INT = 0
 
+    SELECT @isRightPass = COUNT(*) FROM dbo.Account WHERE USERName = @userName AND PassWord = @password
+
+    IF (@isRightPass = 1)
+    BEGIN
+        IF (@newPassword = NULL OR @newPassword = '')
+        BEGIN
+            UPDATE dbo.Account SET DisplayName = @displayName WHERE UserName = @userName
+        END
+		ELSE
+			UPDATE dbo.Account SET DisplayName = @displayName, PassWord = @newPassword WHERE UserName = @userName
+    END
+END
+GO
 
