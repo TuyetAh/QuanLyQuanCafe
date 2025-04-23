@@ -52,6 +52,9 @@
             this.cbFood = new System.Windows.Forms.ComboBox();
             this.cbCategory = new System.Windows.Forms.ComboBox();
             this.flpTable = new System.Windows.Forms.FlowLayoutPanel();
+            this.chứcNăngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thanhToánToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thêmMónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -65,17 +68,18 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.adminToolStripMenuItem,
-            this.thôngTinTàiKhoảnToolStripMenuItem});
+            this.thôngTinTàiKhoảnToolStripMenuItem,
+            this.chứcNăngToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(837, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(837, 30);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // adminToolStripMenuItem
             // 
             this.adminToolStripMenuItem.Name = "adminToolStripMenuItem";
-            this.adminToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
+            this.adminToolStripMenuItem.Size = new System.Drawing.Size(67, 26);
             this.adminToolStripMenuItem.Text = "Admin";
             this.adminToolStripMenuItem.Click += new System.EventHandler(this.adminToolStripMenuItem_Click);
             // 
@@ -85,20 +89,20 @@
             this.thôngTinTàiKhoảnToolStripMenuItem1,
             this.đăngXuấtToolStripMenuItem});
             this.thôngTinTàiKhoảnToolStripMenuItem.Name = "thôngTinTàiKhoảnToolStripMenuItem";
-            this.thôngTinTàiKhoảnToolStripMenuItem.Size = new System.Drawing.Size(122, 20);
+            this.thôngTinTàiKhoảnToolStripMenuItem.Size = new System.Drawing.Size(151, 26);
             this.thôngTinTàiKhoảnToolStripMenuItem.Text = "Thông tin tài khoản";
             // 
             // thôngTinTàiKhoảnToolStripMenuItem1
             // 
             this.thôngTinTàiKhoảnToolStripMenuItem1.Name = "thôngTinTàiKhoảnToolStripMenuItem1";
-            this.thôngTinTàiKhoảnToolStripMenuItem1.Size = new System.Drawing.Size(177, 22);
+            this.thôngTinTàiKhoảnToolStripMenuItem1.Size = new System.Drawing.Size(220, 26);
             this.thôngTinTàiKhoảnToolStripMenuItem1.Text = "Thông tin tài khoản";
             this.thôngTinTàiKhoảnToolStripMenuItem1.Click += new System.EventHandler(this.thôngTinTàiKhoảnToolStripMenuItem1_Click);
             // 
             // đăngXuấtToolStripMenuItem
             // 
             this.đăngXuấtToolStripMenuItem.Name = "đăngXuấtToolStripMenuItem";
-            this.đăngXuấtToolStripMenuItem.Size = new System.Drawing.Size(177, 22);
+            this.đăngXuấtToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.đăngXuấtToolStripMenuItem.Text = "Đăng xuất";
             this.đăngXuấtToolStripMenuItem.Click += new System.EventHandler(this.đăngXuấtToolStripMenuItem_Click);
             // 
@@ -166,7 +170,7 @@
             this.txbTotalPrice.Location = new System.Drawing.Point(208, 38);
             this.txbTotalPrice.Name = "txbTotalPrice";
             this.txbTotalPrice.ReadOnly = true;
-            this.txbTotalPrice.Size = new System.Drawing.Size(131, 23);
+            this.txbTotalPrice.Size = new System.Drawing.Size(131, 27);
             this.txbTotalPrice.TabIndex = 7;
             this.txbTotalPrice.Text = "0";
             this.txbTotalPrice.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -176,7 +180,7 @@
             this.cbSwitchTable.FormattingEnabled = true;
             this.cbSwitchTable.Location = new System.Drawing.Point(3, 54);
             this.cbSwitchTable.Name = "cbSwitchTable";
-            this.cbSwitchTable.Size = new System.Drawing.Size(96, 23);
+            this.cbSwitchTable.Size = new System.Drawing.Size(96, 25);
             this.cbSwitchTable.TabIndex = 4;
             // 
             // btnSwitchTable
@@ -193,7 +197,7 @@
             // 
             this.nmDisCount.Location = new System.Drawing.Point(105, 54);
             this.nmDisCount.Name = "nmDisCount";
-            this.nmDisCount.Size = new System.Drawing.Size(84, 21);
+            this.nmDisCount.Size = new System.Drawing.Size(84, 25);
             this.nmDisCount.TabIndex = 4;
             this.nmDisCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
@@ -236,7 +240,7 @@
             0,
             -2147483648});
             this.nmFood.Name = "nmFood";
-            this.nmFood.Size = new System.Drawing.Size(40, 21);
+            this.nmFood.Size = new System.Drawing.Size(40, 25);
             this.nmFood.TabIndex = 3;
             this.nmFood.Value = new decimal(new int[] {
             1,
@@ -259,7 +263,7 @@
             this.cbFood.FormattingEnabled = true;
             this.cbFood.Location = new System.Drawing.Point(14, 46);
             this.cbFood.Name = "cbFood";
-            this.cbFood.Size = new System.Drawing.Size(259, 23);
+            this.cbFood.Size = new System.Drawing.Size(259, 25);
             this.cbFood.TabIndex = 1;
             // 
             // cbCategory
@@ -267,7 +271,7 @@
             this.cbCategory.FormattingEnabled = true;
             this.cbCategory.Location = new System.Drawing.Point(14, 15);
             this.cbCategory.Name = "cbCategory";
-            this.cbCategory.Size = new System.Drawing.Size(259, 23);
+            this.cbCategory.Size = new System.Drawing.Size(259, 25);
             this.cbCategory.TabIndex = 0;
             this.cbCategory.SelectedIndexChanged += new System.EventHandler(this.cbCategory_SelectedIndexChanged);
             // 
@@ -279,9 +283,34 @@
             this.flpTable.Size = new System.Drawing.Size(365, 546);
             this.flpTable.TabIndex = 4;
             // 
+            // chứcNăngToolStripMenuItem
+            // 
+            this.chứcNăngToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.thanhToánToolStripMenuItem,
+            this.thêmMónToolStripMenuItem});
+            this.chứcNăngToolStripMenuItem.Name = "chứcNăngToolStripMenuItem";
+            this.chứcNăngToolStripMenuItem.Size = new System.Drawing.Size(93, 26);
+            this.chứcNăngToolStripMenuItem.Text = "Chức năng";
+            // 
+            // thanhToánToolStripMenuItem
+            // 
+            this.thanhToánToolStripMenuItem.Name = "thanhToánToolStripMenuItem";
+            this.thanhToánToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.thanhToánToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.thanhToánToolStripMenuItem.Text = "Thanh toán";
+            this.thanhToánToolStripMenuItem.Click += new System.EventHandler(this.thanhToánToolStripMenuItem_Click);
+            // 
+            // thêmMónToolStripMenuItem
+            // 
+            this.thêmMónToolStripMenuItem.Name = "thêmMónToolStripMenuItem";
+            this.thêmMónToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.thêmMónToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.thêmMónToolStripMenuItem.Text = "Thêm món";
+            this.thêmMónToolStripMenuItem.Click += new System.EventHandler(this.thêmMónToolStripMenuItem_Click);
+            // 
             // fTableManager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(837, 599);
             this.Controls.Add(this.flpTable);
@@ -332,5 +361,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.TextBox txbTotalPrice;
+        private System.Windows.Forms.ToolStripMenuItem chứcNăngToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thanhToánToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thêmMónToolStripMenuItem;
     }
 }

@@ -122,6 +122,16 @@ namespace QuanLyQuanCafe
 
 
         #region Events
+
+        private void thanhToánToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnCheckOut_Click(this, new EventArgs());
+        }
+
+        private void thêmMónToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            btnAddFood_Click(this, new EventArgs());
+        }
         void btn_Click(Object sender, EventArgs e)
         {
             int tableID = ((sender as Button).Tag as Table).ID;
@@ -179,7 +189,7 @@ namespace QuanLyQuanCafe
         {
             Table table = lsvBill.Tag as Table;
 
-            if (table != null)
+            if (table == null)
             {
                 MessageBox.Show("Hãy chọn bàn");
                 return;
@@ -213,7 +223,10 @@ namespace QuanLyQuanCafe
             int idBill = BillDAO.Instance.GetUncheckBillIDByTableID(table.ID);
             int discount = (int)nmDisCount.Value;
 
-            double totalPrice = Convert.ToDouble(txbTotalPrice.Text.Split(',')[0]);
+            CultureInfo culture = new CultureInfo("vi-VN");
+            string raw = txbTotalPrice.Text.Replace("₫", "").Replace("đ", "").Trim();
+            double totalPrice = double.Parse(raw, culture);
+
             double finalTotalPrice = totalPrice - (totalPrice / 100) * discount;
 
             if (idBill != -1)
@@ -246,5 +259,7 @@ namespace QuanLyQuanCafe
 
             }
         }
+
+
     }
 }
