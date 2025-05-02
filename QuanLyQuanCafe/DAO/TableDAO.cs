@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace QuanLyQuanCafe.DAO
 {
@@ -24,7 +25,9 @@ namespace QuanLyQuanCafe.DAO
 
         public void SwitchTable(int id1, int id2)
         {
-            DataProvider.Instance.ExecuteQuery("USP_SwitchTabel @idTable1, @idTable2", new object[]{id1, id2});
+
+            DataProvider.Instance.ExecuteQuery("USP_SwitchTable @idTable1 , @idTable2", new object[]{id1, id2});
+
         }
 
         public List<Table> LoadTableList()

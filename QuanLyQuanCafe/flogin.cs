@@ -23,10 +23,11 @@ namespace QuanLyQuanCafe
         {
             string userName = txbUserName.Text;
             string passWord = txbPassWord.Text;
-            if (Login(userName, passWord))
+
+            if (AccountDAO.Instance.Login(userName, passWord))
             {
-                Account loginAccount = AccountDAO.Instance.GetAccountByUserName(userName);
-                fTableManager f = new fTableManager(loginAccount);
+                // Dùng tài khoản đã lưu sẵn sau khi đăng nhập thành công
+                fTableManager f = new fTableManager(AccountSession.LoggedInAccount);
                 this.Hide();
                 f.ShowDialog();
                 this.Show();
@@ -36,6 +37,7 @@ namespace QuanLyQuanCafe
                 MessageBox.Show("Sai tên tài khoản hoặc mật khẩu!");
             }
         }
+
         bool Login(string userName, string passWord)
         {
             return AccountDAO.Instance.Login(userName, passWord);

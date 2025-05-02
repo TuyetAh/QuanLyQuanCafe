@@ -37,7 +37,14 @@ namespace QuanLyQuanCafe.DAO
 
             string query = "USP_Login @userName , @passWord";
             DataTable result = DataProvider.Instance.ExecuteQuery(query, new object[] {username, hasPass});
-            return result.Rows.Count > 0;
+            if (result.Rows.Count > 0)
+            {
+                // Tạo đối tượng Account từ kết quả và lưu lại
+                AccountSession.LoggedInAccount = new Account(result.Rows[0]);
+                return true;
+            }
+
+            return false;
         }
 
         public bool UpdateAccount(string userName, string displayName, string pass, string newPass)

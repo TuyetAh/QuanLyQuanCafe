@@ -81,5 +81,49 @@ namespace QuanLyQuanCafe.DAO
                 return 1;
             }
         }
+        // noted 
+        public float GetRevenueByDate(DateTime checkIn, DateTime checkOut)
+        {
+            float revenue = 0;
+            string query = "SELECT SUM(b.TotalPrice) FROM Bill AS b WHERE b.DateCheckIn >= @checkIn AND b.DateCheckOut <= @checkOut AND b.Status = 1";
+            object result = DataProvider.Instance.ExecuteScalar(query, new object[] { checkIn, checkOut });
+            if (result != DBNull.Value)
+                revenue = Convert.ToSingle(result);
+            return revenue;
+        }
+        public int GetTotalBills(DateTime checkIn, DateTime checkOut)
+        {
+            string query = "SELECT COUNT(*) FROM Bill WHERE DateCheckIn >= @checkIn AND DateCheckOut <= @checkOut AND Status = 1";
+            return (int)DataProvider.Instance.ExecuteScalar(query, new object[] { checkIn, checkOut });
+        }
+
+        public DataTable GetDailyRevenue(DateTime checkIn, DateTime checkOut)
+        {
+            string query = @"
+        SELECT 
+            CAST(DateCheckIn AS DATE) AS Ngay,
+            SUM(TotalPrice) AS DoanhThu
+        FROM Bill
+        WHERE DateCheckIn >= @checkIn AND DateCheckOut <= @checkOut AND Status = 1
+        GROUP BY CAST(DateCheckIn AS DATE)
+        ORDER BY Ngay";
+
+            return DataProvider.Instance.ExecuteQuery(query, new object[] { checkIn, checkOut });
+        }
+        public DataTable GetDailyTotalBills(DateTime checkIn, DateTime checkOut)
+        {
+            string query = @"
+        SELECT 
+            CAST(DateCheckIn AS DATE) AS Ngay,
+            COUNT(*) AS SoHoaDon
+        FROM Bill
+        WHERE DateCheckIn >= @checkIn AND DateCheckOut <= @checkOut AND Status = 1
+        GROUP BY CAST(DateCheckIn AS DATE)
+        ORDER BY Ngay";
+
+            return DataProvider.Instance.ExecuteQuery(query, new object[] { checkIn, checkOut });
+        }
+
+
     }
 }

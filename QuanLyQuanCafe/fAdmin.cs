@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Globalization;
+using System.IO;
 
 namespace QuanLyQuanCafe
 {
@@ -81,9 +84,12 @@ namespace QuanLyQuanCafe
         }
         void LoadCategoryIntoComboBox(ComboBox cb)
         {
+            cb.DataSource = null;         // xóa liên kết cũ
+            cb.Items.Clear();             // xóa tất cả item đang hiển thị (dù đã null)
             cb.DataSource = CategoryDAO.Instance.GetListCategory();
             cb.DisplayMember = "Name";
         }
+
         void LoadListFood()
         {
             foodList.DataSource = FoodDAO.Instance.GetListFood();
@@ -354,5 +360,180 @@ namespace QuanLyQuanCafe
             txbPageBill.Text = page.ToString();
 
         }
+        //
+
+
+
+
+        private void btnViewRevenue_Click_1(object sender, EventArgs e)
+        {
+            DateTime fromDate = dtpkFrom.Value;
+            DateTime toDate = dtpkTo.Value;
+
+            float totalRevenue = BillDAO.Instance.GetRevenueByDate(fromDate, toDate);
+            DataTable dailyRevenue = BillDAO.Instance.GetDailyRevenue(fromDate, toDate);
+
+            dtgvReport.Columns.Clear();
+            dtgvReport.Rows.Clear();
+
+            // Tạo cột
+            dtgvReport.Columns.Add("MoTa", "Mô Tả");
+            dtgvReport.Columns.Add("GiaTri", "Giá Trị");
+
+            // Hàng đầu tiên: tổng doanh thu
+            CultureInfo viVN = new CultureInfo("vi-VN");
+
+            dtgvReport.Rows.Add(
+                $"Doanh thu từ {fromDate.ToShortDateString()} đến {toDate.ToShortDateString()}",
+                totalRevenue.ToString("c0", viVN)
+                        );
+
+            // Dòng trống để phân cách
+            dtgvReport.Rows.Add("", "");
+
+            // Các hàng tiếp theo: doanh thu từng ngày
+            foreach (DataRow row in dailyRevenue.Rows)
+            {
+                DateTime ngay = Convert.ToDateTime(row["Ngay"]);
+                float doanhThu = Convert.ToSingle(row["DoanhThu"]);
+                dtgvReport.Rows.Add(ngay.ToShortDateString(), doanhThu.ToString("c0", viVN));
+            }
+
+            dtgvReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+
+
+        }//OK
+
+
+
+        private void btnTopFoods_Click(object sender, EventArgs e)
+        {
+            DateTime fromDate = dtpkFrom.Value;
+            DateTime toDate = dtpkTo.Value;
+
+            DataTable topFood = FoodDAO.Instance.GetBestSellingFood(fromDate, toDate);
+            DataTable allFoods = FoodDAO.Instance.GetAllSoldFoods(fromDate, toDate);
+
+            dtgvReport.Columns.Clear();
+            dtgvReport.Rows.Clear();
+
+            dtgvReport.Columns.Add("MoTa", "Mô Tả");
+            dtgvReport.Columns.Add("GiaTri", "Giá Trị");
+
+            if (topFood.Rows.Count > 0)
+            {
+                string name = topFood.Rows[0]["Name"].ToString();
+                string count = topFood.Rows[0]["TotalSold"].ToString();
+                dtgvReport.Rows.Add($"Món bán chạy nhất từ {fromDate.ToShortDateString()} đến {toDate.ToShortDateString()}:", $"{count} phần ({name})");
+            }
+            else
+            {
+                dtgvReport.Rows.Add("Không có dữ liệu trong khoảng thời gian này.", "");
+            }
+
+            // Dòng trống để phân cách
+            dtgvReport.Rows.Add("", "");
+
+            // Các món khác
+            foreach (DataRow row in allFoods.Rows)
+            {
+                string foodName = row["Name"].ToString();
+                string totalSold = row["TotalSold"].ToString();
+                dtgvReport.Rows.Add(foodName, $"{totalSold} phần");
+            }
+
+            dtgvReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+
+
+        private void btnTotalBills_Click_1(object sender, EventArgs e)
+        {
+            DateTime fromDate = dtpkFrom.Value;
+            DateTime toDate = dtpkTo.Value;
+
+            int total = BillDAO.Instance.GetTotalBills(fromDate, toDate);
+            DataTable dailyBills = BillDAO.Instance.GetDailyTotalBills(fromDate, toDate);
+
+            dtgvReport.Columns.Clear();
+            dtgvReport.Rows.Clear();
+
+            dtgvReport.Columns.Add("MoTa", "Mô Tả");
+            dtgvReport.Columns.Add("SoLuong", "Số Lượng");
+
+            dtgvReport.Rows.Add(
+                $"Tổng số hóa đơn từ {fromDate.ToShortDateString()} đến {toDate.ToShortDateString()}",
+                total.ToString()
+            );
+
+            // Dòng trống để phân cách
+            dtgvReport.Rows.Add("", "");
+
+            // Các hàng tiếp theo: từng ngày
+            foreach (DataRow row in dailyBills.Rows)
+            {
+                DateTime ngay = Convert.ToDateTime(row["Ngay"]);
+                int soHoaDon = Convert.ToInt32(row["SoHoaDon"]);
+                dtgvReport.Rows.Add(ngay.ToShortDateString(), soHoaDon.ToString());
+            }
+
+            dtgvReport.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        private void btnExport_Click(object sender, EventArgs e)
+        {
+            if (dtgvReport.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "CSV file (*.csv)|*.csv";
+            sfd.FileName = "BaoCao.csv";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    using (StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8))
+                    {
+                        // Ghi tiêu đề cột
+                        for (int i = 0; i < dtgvReport.Columns.Count; i++)
+                        {
+                            sw.Write(dtgvReport.Columns[i].HeaderText);
+                            if (i < dtgvReport.Columns.Count - 1)
+                                sw.Write(",");
+                        }
+                        sw.WriteLine();
+
+                        // Ghi từng dòng dữ liệu
+                        foreach (DataGridViewRow row in dtgvReport.Rows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                for (int i = 0; i < dtgvReport.Columns.Count; i++)
+                                {
+                                    var cell = row.Cells[i].Value?.ToString().Replace(",", ""); // tránh lỗi dấu phẩy
+                                    sw.Write(cell);
+                                    if (i < dtgvReport.Columns.Count - 1)
+                                        sw.Write(",");
+                                }
+                                sw.WriteLine();
+                            }
+                        }
+                    }
+
+                    MessageBox.Show("Xuất file thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi khi xuất file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+
     }
 }

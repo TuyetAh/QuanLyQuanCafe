@@ -79,7 +79,7 @@ VALUES
 (
 	N'RongK9' , --DisplayName - nvarchar(100)
 	N'K9' , --UserName - nvarchar(100)
-	N'1' , --Password - nvarchar(1000)
+	N'1962026656160185351301320480154111117132155' , --Password - nvarchar(1000)
 	1 -- Type - int
 
 )
@@ -94,7 +94,7 @@ VALUES
 (
 	N'staff' , --DisplayName - nvarchar(100)
 	N'staff' , --UserName - nvarchar(100)
-	N'1' , --Password - nvarchar(1000)
+	N'1962026656160185351301320480154111117132155' , --Password - nvarchar(1000)
 	0 -- Type - int
 
 )
@@ -336,7 +336,7 @@ AS
 BEGIN
 	DECLARE @idBill INT
 
-	SELECT @idBill= idBill FROM inserted
+	SELECT @idBill= idBill FROM Inserted
 
 	DECLARE @idTable INT
 
@@ -346,145 +346,93 @@ BEGIN
 	SELECT @count = COUNT(*) FROM dbo.BillInfo WHERE idBill = @idBill
 
 	IF (@count > 0)
-	BEGIN
-
-		PRINT @idTable 
-		PRINT @idBill
-		PRINT @count
-
 		UPDATE dbo.TableFood SET status = N'Có người' WHERE id= @idTable
-		
-	END
 	ELSE 
-	BEGIN
-	PRINT @idTable 
-		PRINT @idBill
-		PRINT @count
 	UPDATE dbo.TableFood SET status = N'Trống' WHERE id= @idTable
-	END
+	
 
 END
 GO
 
 
-CREATE TRIGGER UTG_UpdateBill
+ALTER TRIGGER UTG_UpdateBill
 ON dbo.Bill FOR UPDATE
 AS
 BEGIN
 	DECLARE @idBill INT
 	SELECT @idBill = id FROM inserted
+
 	DECLARE @idTable INT
 	SELECT @idTable = idTable FROM dbo.Bill WHERE id = @idBill
-	DECLARE @count INT = 0
-	SELECT @count = COUNT(*) FROM dbo.Bill WHERE idTable=@idTable AND status = 0
-	IF(@count= 0)
-		UPDATE dbo.TableFood SET status = N'Trống' WHERE id=@idTable
+
+	-- Nếu KHÔNG còn bill nào status = 0 (chưa thanh toán)
+	IF NOT EXISTS (SELECT 1 FROM dbo.Bill WHERE idTable = @idTable AND status = 0)
+	BEGIN
+		-- Đồng thời KHÔNG còn món ăn chưa thanh toán (trong các bill status = 1 vẫn có thể còn BillInfo do chưa xóa)
+		IF NOT EXISTS (
+			SELECT 1 FROM dbo.BillInfo
+			WHERE idBill IN (SELECT id FROM dbo.Bill WHERE idTable = @idTable AND status = 0)
+		)
+		BEGIN
+			UPDATE dbo.TableFood SET status = N'Trống' WHERE id = @idTable
+		END
+	END
 END
+UPDATE dbo.TableFood SET status = N'Trống'
+
 GO
 
 
 
 
-CREATE PROC USP_SwitchTabel
-@idTable1 INT, @idTable2 int 
-AS BEGIN 
+ALTER PROC USP_SwitchTable
+@idTable1 int, @idTable2 int 
+AS 
+BEGIN
+    DECLARE @idFirstBill int
+    DECLARE @idSecondBill int
+
+    SELECT @idFirstBill = id FROM dbo.Bill WHERE idTable = @idTable1 AND status = 0
+    SELECT @idSecondBill = id FROM dbo.Bill WHERE idTable = @idTable2 AND status = 0
+
+    IF @idSecondBill IS NOT NULL
+    BEGIN
+        -- Gộp món: chuyển BillInfo từ bàn A (idFirstBill) sang bàn B (idSecondBill)
+        UPDATE dbo.BillInfo SET idBill = @idSecondBill WHERE idBill = @idFirstBill
+
+        -- Xóa bill bàn A sau khi đã gộp
+        DELETE FROM dbo.Bill WHERE id = @idFirstBill
+
+        -- Cập nhật trạng thái bàn A thành trống
+        UPDATE dbo.TableFood SET status = N'Trống' WHERE id = @idTable1
+
+        -- Bàn B vẫn giữ trạng thái 'Có người'
+    END
+    ELSE
+    BEGIN
+        -- Bàn B trống → tạo bill mới
+        INSERT dbo.Bill(DateCheckIn, idTable, status)
+        VALUES(GETDATE(), @idTable2, 0)
+
+        SELECT @idSecondBill = SCOPE_IDENTITY()
+
+        -- Chuyển món sang bàn B
+        UPDATE dbo.BillInfo SET idBill = @idSecondBill WHERE idBill = @idFirstBill
+
+        -- Xóa bill cũ
+        DELETE FROM dbo.Bill WHERE id = @idFirstBill
+
+        -- Cập nhật status
+        UPDATE dbo.TableFood SET status = N'Trống' WHERE id = @idTable1
+        UPDATE dbo.TableFood SET status = N'Có người' WHERE id = @idTable2
+    END
+END
+
+GO
+EXEC dbo.USP_SwitchTable @idTable1 = 45 ,  --int 
+	@idTable2 = 10 --int
 	
-	DECLARE @idFirstBill int
-	DECLARE @idSeconrdBill INT
-
-	DECLARE @isFirstTablEmty INT = 1
-	DECLARE @isSeconrdTablEmty INT = 1
-
-	SELECT @idSeconrdBill = id FROM dbo.Bill WHERE idTable = @idTable2 AND status =  0 
-	SELECT @idFirstBill = id FROM dbo.Bill WHERE idTable = @idTable1 AND status =  0
-
-	PRINT @idFirstBill 
-	PRINT @idSeconrdBill
-	PRINT '----------'
-
-	IF (@idFirstBill IS NULL)
-	BEGIN
-		PRINT '0000001'
-		INSERT dbo.Bill
-			(
-			DateCheckIn ,
-			DateCheckOut ,
-			idTable ,
-			status
-			
-			)
-		VALUES
-			(
-				GETDATE() ,	--DateCheckIn - date
-				NULL , --DateCheckOut -date
-				@idTable1 , -- idTable - int
-				0 --status - int
-				
-			)
-			
-
-		SELECT @idFirstBill = MAX(id) FROM dbo.Bill WHERE idTable = @idTable1 AND status =  0	
-		
-		
-	END
-
-	SELECT @isFirstTablEmty = COUNT(*) FROM dbo.BillInfo WHERE idBill = @idFirstBill
-
-	PRINT @idFirstBill 
-	PRINT @idSeconrdBill
-	PRINT '----------'
-
-	IF (@idSeconrdBill IS NULL)
-	BEGIN
-		PRINT '0000002'
-		INSERT dbo.Bill
-			(
-			DateCheckIn ,
-			DateCheckOut ,
-			idTable ,
-			status
-			
-			)
-		VALUES
-			(
-				GETDATE() ,	--DateCheckIn - date
-				NULL , --DateCheckOut -date
-				@idTable2 , -- idTable - int
-				0 --status - int
-				
-			)
-			
-
-		SELECT @idSeconrdBill = MAX(id) FROM dbo.Bill WHERE idTable = @idTable2 AND status =  0	
-		
-
-	END
-
-	SELECT @isSeconrdTablEmty = COUNT(*) FROM dbo.BillInfo WHERE idBill = @idSeconrdBill
-
-	PRINT @idFirstBill 
-	PRINT @idSeconrdBill
-	PRINT '----------'
-
-	SELECT id INTO IDBillInfoTable FROM dbo.BillInfo WHERE idBill = @idSeconrdBill
-
-	UPDATE dbo.BillInfo SET idBill = @idSeconrdBill WHERE idBill = @idFirstBill
-
-	UPDATE dbo.BillInfo SET idBill = @idFirstBill WHERE id IN (SELECT * FROM IDBillInfoTable)
-
-	DROP TABLE IDBillInfoTable
-
-	IF (@isFirstTablEmty = 0 )
-		UPDATE dbo.TableFood SET status = N'Trống' WHERE id = @idTable2
-
-	IF (@isSeconrdTablEmty = 0 )
-		UPDATE dbo.TableFood SET status = N'Trống' WHERE id = @idTable1
-
-END
-GO
-
-EXEC dbo.USP_SwitchTabel @idTable1 = 8,  --int 
-	@idTable2 = 11 --int
+--Done fix chuyển bàn 
 GO
 --vid 15
 ALTER TABLE dbo.Bill ADD totalPrice FLOAT

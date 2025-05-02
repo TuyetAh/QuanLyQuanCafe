@@ -87,5 +87,33 @@ namespace QuanLyQuanCafe.DAO
             return result > 0;
         }
 
+        //
+        public DataTable GetBestSellingFood(DateTime checkIn, DateTime checkOut)
+        {
+            string query = @"
+        SELECT TOP 1 f.Name, SUM(bi.Count) AS TotalSold
+        FROM BillInfo AS bi
+        JOIN Bill AS b ON bi.IDBill = b.ID
+        JOIN Food AS f ON bi.IDFood = f.ID
+        WHERE b.DateCheckIn >= @checkIn AND b.DateCheckOut <= @checkOut AND b.Status = 1
+        GROUP BY f.Name
+        ORDER BY TotalSold DESC";
+            return DataProvider.Instance.ExecuteQuery(query, new object[] { checkIn, checkOut });
+        }
+
+        public DataTable GetAllSoldFoods(DateTime checkIn, DateTime checkOut)
+        {
+            string query = @"
+        SELECT f.Name, SUM(bi.Count) AS TotalSold
+        FROM BillInfo AS bi
+        JOIN Bill AS b ON bi.IDBill = b.ID
+        JOIN Food AS f ON bi.IDFood = f.ID
+        WHERE b.DateCheckIn >= @checkIn AND b.DateCheckOut <= @checkOut AND b.Status = 1
+        GROUP BY f.Name
+        ORDER BY TotalSold DESC";
+
+            return DataProvider.Instance.ExecuteQuery(query, new object[] { checkIn, checkOut });
+        }
+
     }
 }

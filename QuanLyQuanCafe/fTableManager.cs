@@ -27,7 +27,8 @@ namespace QuanLyQuanCafe
         {
             InitializeComponent();
 
-            this.loginAccount = acc;
+            this.LoginAccount = acc;
+
 
             LoadTable();
             LoadCategory();
@@ -240,25 +241,35 @@ namespace QuanLyQuanCafe
             }
         }
 
+        private void btnSwitchTable_Click(object sender, EventArgs e)
+        {
+            int id1 = (lsvBill.Tag as Table).ID;
+            int id2 = (cbSwitchTable.SelectedItem as Table).ID;
+
+            string table1Status = DataProvider.Instance.ExecuteScalar("SELECT status FROM dbo.TableFood WHERE id = " + id1).ToString();
+            string table2Status = DataProvider.Instance.ExecuteScalar("SELECT status FROM dbo.TableFood WHERE id = " + id2).ToString();
+
+            if (table1Status == "Trống" && table2Status == "Trống")
+            {
+                MessageBox.Show("Không thể chuyển bàn, vì cả hai bàn đều đang trống.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show(string.Format("Bạn có thật sự muốn chuyển bàn {0} qua bàn {1}?", (lsvBill.Tag as Table).Name, (cbSwitchTable.SelectedItem as Table).Name), "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                TableDAO.Instance.SwitchTable(id1, id2);
+
+                LoadTable();
+            }
+        }
 
 
 
 
         #endregion
 
-        private void btnSwitchTable_Click(object sender, EventArgs e)
-        {
-            int id1 = (lsvBill.Tag as Table).ID;
 
-            int id2 = (cbSwitchTable.SelectedItem as Table).ID;
-            if (MessageBox.Show(string.Format("Bạn có thật sự muốn chuyển bàn {0} qua bàn {1}", (lsvBill.Tag as Table).Name, (cbSwitchTable.SelectedItem as Table).Name), "Thông báo", MessageBoxButtons.OKCancel) == System.Windows.Forms.DialogResult.OK)
-            {
-                TableDAO.Instance.SwitchTable(id1, id2);
 
-                LoadTable();
-
-            }
-        }
 
 
     }
