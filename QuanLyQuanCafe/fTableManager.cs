@@ -14,12 +14,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using QuanLyQuanCafe; // Nếu fAccountProfile nằm trong namespace này
 using Menu = DataTransferObject.Menu;
+using BussinessLayer;
 
 namespace QuanLyQuanCafe
 {
     public partial class fTableManager : Form
     {
         private Account loginAccount;
+
+        //test
+        private Customer _currentCustomer;  // Khách hàng hiện tại
+        private VoucherService _voucherService;
+
 
         public Account LoginAccount
         {
@@ -29,6 +35,10 @@ namespace QuanLyQuanCafe
         public fTableManager(Account acc)
         {
             InitializeComponent();
+
+            //tt
+            _currentCustomer = new Customer("Khách Hàng 1");  // Tạo khách hàng tạm
+            _voucherService = new VoucherService();  // Khởi tạo dịch vụ tặng voucher
 
             this.LoginAccount = acc;
 
@@ -243,6 +253,17 @@ namespace QuanLyQuanCafe
                     LoadTable();
                 }
             }
+
+            
+            // Cộng điểm cho khách hàng (ví dụ: 10 điểm cho mỗi món uống)
+            int pointsEarned = 10;
+            _currentCustomer.AddPoints(pointsEarned);
+
+            // Random voucher và hiển thị kết quả
+            string voucherResult = _voucherService.GetRandomVoucher();
+
+            // Hiển thị kết quả
+            MessageBox.Show($"Bạn đã tích được {pointsEarned} điểm.\n{voucherResult}");
         }
 
         private void btnSwitchTable_Click(object sender, EventArgs e)
@@ -268,12 +289,16 @@ namespace QuanLyQuanCafe
         }
 
 
+        private void btnShowPoints_Click_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show($"Tổng điểm của {_currentCustomer.Name} là: {_currentCustomer.Points}");
+        }
+
+
+
 
 
         #endregion
-
-
-
 
 
     }

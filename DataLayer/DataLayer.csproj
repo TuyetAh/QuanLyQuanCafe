@@ -47,6 +47,7 @@
     <Compile Include="BillInfoDAO.cs" />
     <Compile Include="CategoryDAO.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="Customer.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="FoodDAO.cs" />
     <Compile Include="MenuDAO.cs" />

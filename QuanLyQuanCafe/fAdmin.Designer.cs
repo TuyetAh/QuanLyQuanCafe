@@ -157,6 +157,7 @@
             this.dtpkTo = new System.Windows.Forms.DateTimePicker();
             this.dtpkFrom = new System.Windows.Forms.DateTimePicker();
             this.quanLyQuanCafeDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnThongKeBan = new System.Windows.Forms.Button();
             this.tcBill.SuspendLayout();
             this.tpBill.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -1020,6 +1021,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.btnThongKeBan);
             this.tabPage4.Controls.Add(this.panel33);
             this.tabPage4.Controls.Add(this.panel36);
             this.tabPage4.Controls.Add(this.panel37);
@@ -1466,6 +1468,16 @@
             this.dtpkFrom.Size = new System.Drawing.Size(200, 27);
             this.dtpkFrom.TabIndex = 0;
             // 
+            // btnThongKeBan
+            // 
+            this.btnThongKeBan.Location = new System.Drawing.Point(646, 19);
+            this.btnThongKeBan.Name = "btnThongKeBan";
+            this.btnThongKeBan.Size = new System.Drawing.Size(124, 44);
+            this.btnThongKeBan.TabIndex = 11;
+            this.btnThongKeBan.Text = "Kiểm tra bàn";
+            this.btnThongKeBan.UseVisualStyleBackColor = true;
+            this.btnThongKeBan.Click += new System.EventHandler(this.btnThongKeBan_Click);
+            // 
             // fAdmin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
@@ -1692,5 +1704,6 @@
         private System.Windows.Forms.DateTimePicker dtpkTo;
         private System.Windows.Forms.DateTimePicker dtpkFrom;
         private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button btnThongKeBan;
     }
 }

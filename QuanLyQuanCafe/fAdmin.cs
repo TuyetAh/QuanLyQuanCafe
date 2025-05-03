@@ -722,5 +722,30 @@ namespace QuanLyQuanCafe
                 cbTableStatus.Text = row.Cells["Status"].Value.ToString();
             }
         }
+
+        //kiemtraban
+        void ThongKeBan()
+        {
+            string query = "SELECT Status, COUNT(*) AS SoLuong FROM TableFood GROUP BY Status";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+
+            StringBuilder sb = new StringBuilder();
+
+            foreach (DataRow row in data.Rows)
+            {
+                string status = row["Status"].ToString();
+                int soLuong = (int)row["SoLuong"];
+                sb.AppendLine($"{status}: {soLuong}");
+            }
+
+            MessageBox.Show(sb.ToString(), "Thống kê bàn");
+        }
+
+        private void btnThongKeBan_Click(object sender, EventArgs e)
+        {
+           
+                ThongKeBan();
+            
+        }
     }
 }
