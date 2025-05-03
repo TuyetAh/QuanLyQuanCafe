@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
     public class Food
     {
@@ -20,7 +20,7 @@ namespace QuanLyQuanCafe.DTO
         {
             this.ID = (int)row["id"];
             this.Name = row["name"].ToString();
-            this.CategoryID =(int)row["idcategory"];
+            this.CategoryID = (int)row["idcategory"];
             this.Price = (float)Convert.ToDouble(row["price"].ToString());
         }
         private float price;
@@ -36,7 +36,7 @@ namespace QuanLyQuanCafe.DTO
             set { categoryID = value; }
         }
         private string name;
-        public string Name 
+        public string Name
         {
             get { return name; }
             set { name = value; }

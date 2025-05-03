@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 
-namespace QuanLyQuanCafe.DAO
+namespace DataLayer
 {
     public class DataProvider
     {

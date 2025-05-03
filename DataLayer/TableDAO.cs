@@ -1,13 +1,14 @@
-﻿using QuanLyQuanCafe.DTO;
+﻿using DataLayer;
+using DataTransferObject;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace QuanLyQuanCafe.DAO
+
+namespace DataLayer
 {
     public class TableDAO
     {
@@ -26,7 +27,7 @@ namespace QuanLyQuanCafe.DAO
         public void SwitchTable(int id1, int id2)
         {
 
-            DataProvider.Instance.ExecuteQuery("USP_SwitchTable @idTable1 , @idTable2", new object[]{id1, id2});
+            DataProvider.Instance.ExecuteQuery("USP_SwitchTable @idTable1 , @idTable2", new object[] { id1, id2 });
 
         }
 

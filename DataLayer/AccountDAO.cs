@@ -1,4 +1,4 @@
-﻿using QuanLyQuanCafe.DTO;
+﻿using DataTransferObject;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DAO
+namespace DataLayer
 {
  public class AccountDAO
     {
@@ -54,10 +54,19 @@ namespace QuanLyQuanCafe.DAO
             return result > 0;
         }
 
-        public DataTable GetListAcount()
+        public List<Account> GetListAccount()
         {
-            return DataProvider.Instance.ExecuteQuery("SELECT UserName, DisplayName, Type FROM dbo.Account"); 
+            List<Account> list = new List<Account>();
+            string query = "SELECT * FROM Account";
+            DataTable data = DataProvider.Instance.ExecuteQuery(query);
+            foreach (DataRow item in data.Rows)
+            {
+                Account acc = new Account(item);
+                list.Add(acc);
+            }
+            return list;
         }
+
 
         public Account GetAccountByUserName(string userName)
         {

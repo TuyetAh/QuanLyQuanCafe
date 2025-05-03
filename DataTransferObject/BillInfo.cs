@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
     public class BillInfo
     {
-        public BillInfo(int id, int billID, int foodID, int count) 
+        public BillInfo(int id, int billID, int foodID, int count)
         {
             this.ID = id;
             this.BillID = billID;

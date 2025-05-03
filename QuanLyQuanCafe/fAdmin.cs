@@ -1,5 +1,5 @@
-﻿using QuanLyQuanCafe.DAO;
-using QuanLyQuanCafe.DTO;
+﻿using DataLayer;
+using DataTransferObject;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Globalization;
 using System.IO;
+using DataLayer;
+using DataTransferObject;
 
 namespace QuanLyQuanCafe
 {
@@ -37,7 +39,7 @@ namespace QuanLyQuanCafe
         {
             List<Food> listFood = FoodDAO.Instance.SearchFoodByName(name);
             return listFood;
-        } 
+        }
         void Load()
         {
             dtgvFood.DataSource = foodList;
@@ -59,7 +61,8 @@ namespace QuanLyQuanCafe
 
             //bàn ăn
             LoadTableList();
-            AddTableBinding();
+            dtgvTable.SelectionChanged += dtgvTable_SelectionChanged;
+
 
 
         }
@@ -73,7 +76,7 @@ namespace QuanLyQuanCafe
 
         void LoadAccount()
         {
-            accountList.DataSource = AccountDAO.Instance.GetListAcount();
+            accountList.DataSource = AccountDAO.Instance.GetListAccount();
             dtgvAccount.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
@@ -91,7 +94,7 @@ namespace QuanLyQuanCafe
 
         void AddFoodBinding()
         {
-            txbFoodName.DataBindings.Add(new Binding("Text", dtgvFood.DataSource, "Name",true, DataSourceUpdateMode.Never));
+            txbFoodName.DataBindings.Add(new Binding("Text", dtgvFood.DataSource, "Name", true, DataSourceUpdateMode.Never));
             txbFoodID.DataBindings.Add(new Binding("Text", dtgvFood.DataSource, "ID", true, DataSourceUpdateMode.Never));
             nmFoodPrice.DataBindings.Add(new Binding("Value", dtgvFood.DataSource, "Price", true, DataSourceUpdateMode.Never));
         }
@@ -141,7 +144,7 @@ namespace QuanLyQuanCafe
 
         void DeleteAccount(string userName)
         {
-            if(loginAccount.UserName.Equals(userName))
+            if (loginAccount.UserName.Equals(userName))
             {
                 MessageBox.Show("Vui lòng đừng xóa chính bạn chứ ");
                 return;
@@ -224,7 +227,7 @@ namespace QuanLyQuanCafe
                 MessageBox.Show("Xóa danh mục thất bại");
             }
         }
-//test nha cos gif sua sau
+        //test nha cos gif sua sau
         #endregion
 
         #region events
@@ -329,7 +332,7 @@ namespace QuanLyQuanCafe
                 }
             }
             catch { }
-            
+
         }
 
         private void btnAddFood_Click(object sender, EventArgs e)
@@ -342,7 +345,7 @@ namespace QuanLyQuanCafe
             {
                 MessageBox.Show("Thêm món thành công");
                 LoadListFood();
-                if(insertFood != null)
+                if (insertFood != null)
                     insertFood(this, new EventArgs());
             }
             else
@@ -360,7 +363,7 @@ namespace QuanLyQuanCafe
                 MessageBox.Show("Xóa món thành công");
                 LoadListFood();
                 if (deleteFood != null)
-                    deleteFood(this,new EventArgs());
+                    deleteFood(this, new EventArgs());
             }
             else
             {
@@ -380,7 +383,7 @@ namespace QuanLyQuanCafe
                 MessageBox.Show("Sửa món thành công");
                 LoadListFood();
                 if (updateFood != null)
-                    updateFood(this,new EventArgs());
+                    updateFood(this, new EventArgs());
             }
             else
             {
@@ -412,7 +415,7 @@ namespace QuanLyQuanCafe
         private void btnPreviuorsBillPage_Click(object sender, EventArgs e)
         {
             int page = Convert.ToInt32(txbPageBill.Text);
-            if(page>1)
+            if (page > 1)
                 page--;
             txbPageBill.Text = page.ToString();
         }
@@ -680,6 +683,7 @@ namespace QuanLyQuanCafe
             else
             {
                 MessageBox.Show("Xóa bàn thất bại");
+                LoadTableList();
             }
         }
 
@@ -705,6 +709,18 @@ namespace QuanLyQuanCafe
         private void btnShowTable_Click(object sender, EventArgs e)
         {
             LoadTableList();
+
+        }
+
+        private void dtgvTable_SelectionChanged(object sender, EventArgs e)
+        {
+           if (dtgvTable.SelectedRows.Count > 0)
+            {
+                var row = dtgvTable.SelectedRows[0];
+                txbTableID.Text = row.Cells["ID"].Value.ToString();
+                txbTableName.Text = row.Cells["Name"].Value.ToString();
+                cbTableStatus.Text = row.Cells["Status"].Value.ToString();
+            }
         }
     }
 }

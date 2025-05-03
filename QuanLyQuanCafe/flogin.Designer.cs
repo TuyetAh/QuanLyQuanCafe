@@ -1,6 +1,6 @@
 ﻿namespace QuanLyQuanCafe
 {
-    partial class flogin
+    partial class fLogin
     {
         /// <summary>
         /// Required designer variable.
@@ -145,7 +145,7 @@
             this.Name = "flogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Đăng nhập";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.flogin_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.fLogin_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();

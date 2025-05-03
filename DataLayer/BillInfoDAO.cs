@@ -1,4 +1,4 @@
-﻿using QuanLyQuanCafe.DTO;
+﻿using DataTransferObject;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DAO
+namespace DataLayer
 {
     public class BillInfoDAO
     {
@@ -30,7 +30,7 @@ namespace QuanLyQuanCafe.DAO
         {
             List<BillInfo> listBillInfo = new List<BillInfo>();
 
-            DataTable data = DataProvider.Instance.ExecuteQuery("SELECT * FROM dbo.BillInfo WHERE idBill = "+ id);
+            DataTable data = DataProvider.Instance.ExecuteQuery("SELECT * FROM dbo.BillInfo WHERE idBill = " + id);
 
             foreach (DataRow item in data.Rows)
             {
@@ -42,7 +42,7 @@ namespace QuanLyQuanCafe.DAO
         }
         public void InsertBillInfo(int idBill, int idFood, int count)
         {
-            DataProvider.Instance.ExecuteNonQuery("exec InsertBillInfo @idBill , @idFood , @count", new object[] { idBill, idFood, count});
+            DataProvider.Instance.ExecuteNonQuery("exec InsertBillInfo @idBill , @idFood , @count", new object[] { idBill, idFood, count });
 
         }
     }

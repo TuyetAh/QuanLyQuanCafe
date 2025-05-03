@@ -1,4 +1,5 @@
-﻿using QuanLyQuanCafe.DTO;
+﻿using DataLayer;
+using DataTransferObject;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DAO
+namespace DataLayer
 {
     public class MenuDAO
     {

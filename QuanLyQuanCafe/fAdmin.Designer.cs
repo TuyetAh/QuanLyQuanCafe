@@ -1192,6 +1192,7 @@
             this.dtgvTable.RowTemplate.Height = 24;
             this.dtgvTable.Size = new System.Drawing.Size(494, 382);
             this.dtgvTable.TabIndex = 0;
+            this.dtgvTable.SelectionChanged += new System.EventHandler(this.dtgvTable_SelectionChanged);
             // 
             // tabPage5
             // 

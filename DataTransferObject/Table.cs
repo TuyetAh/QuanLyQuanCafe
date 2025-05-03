@@ -5,11 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
     public class Table
     {
-        public Table(int id, string name, string status) 
+        public Table(int id, string name, string status)
         {
             this.ID = iD;
             this.Name = name;
@@ -31,7 +31,7 @@ namespace QuanLyQuanCafe.DTO
         }
 
         private string name;
-        public string Name 
+        public string Name
         {
             get { return name; }
             set { name = value; }

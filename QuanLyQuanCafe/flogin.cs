@@ -1,20 +1,15 @@
-﻿using QuanLyQuanCafe.DAO;
-using QuanLyQuanCafe.DTO;
+﻿using BusinessLayer;
+using DataTransferObject;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace QuanLyQuanCafe
 {
-    public partial class flogin : Form
+    public partial class fLogin : Form
     {
-        public flogin()
+        private readonly AccountService accountService = new AccountService();
+
+        public fLogin()
         {
             InitializeComponent();
         }
@@ -24,10 +19,10 @@ namespace QuanLyQuanCafe
             string userName = txbUserName.Text;
             string passWord = txbPassWord.Text;
 
-            if (AccountDAO.Instance.Login(userName, passWord))
+            if (Login(userName, passWord))
             {
-                // Dùng tài khoản đã lưu sẵn sau khi đăng nhập thành công
-                fTableManager f = new fTableManager(AccountSession.LoggedInAccount);
+                Account loginAccount = accountService.GetAccountByUsername(userName);
+                fTableManager f = new fTableManager(loginAccount);
                 this.Hide();
                 f.ShowDialog();
                 this.Show();
@@ -38,9 +33,9 @@ namespace QuanLyQuanCafe
             }
         }
 
-        bool Login(string userName, string passWord)
+        bool Login(string username, string password)
         {
-            return AccountDAO.Instance.Login(userName, passWord);
+            return accountService.Login(username, password);
         }
 
         private void btnExit_Click(object sender, EventArgs e)
@@ -48,13 +43,12 @@ namespace QuanLyQuanCafe
             Application.Exit();
         }
 
-        private void flogin_FormClosing(object sender, FormClosingEventArgs e)
+        private void fLogin_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if(MessageBox.Show("Bạn thật sự muốn thoát chương trình?","Thông báo", MessageBoxButtons.OKCancel)!= System.Windows.Forms.DialogResult.OK)
+            if (MessageBox.Show("Bạn có thật sự muốn thoát chương trình?", "Thông báo", MessageBoxButtons.OKCancel) != DialogResult.OK)
             {
                 e.Cancel = true;
             }
-
         }
     }
 }

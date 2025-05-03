@@ -64,22 +64,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAO\AccountDAO.cs" />
-    <Compile Include="DAO\AccountSession.cs.cs" />
-    <Compile Include="DAO\BillDAO.cs" />
-    <Compile Include="DAO\BillInfoDAO.cs" />
-    <Compile Include="DAO\CategoryDAO.cs" />
-    <Compile Include="DAO\DataProvider.cs" />
-    <Compile Include="DAO\FoodDAO.cs" />
-    <Compile Include="DAO\MenuDAO.cs" />
-    <Compile Include="DAO\TableDAO.cs" />
-    <Compile Include="DTO\Account.cs" />
-    <Compile Include="DTO\Bill.cs" />
-    <Compile Include="DTO\BillInfo.cs" />
-    <Compile Include="DTO\Category.cs" />
-    <Compile Include="DTO\Food.cs" />
-    <Compile Include="DTO\Menu.cs" />
-    <Compile Include="DTO\Table.cs" />
     <Compile Include="fAccountProfile.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -118,7 +102,6 @@
     <EmbeddedResource Include="fTableManager.resx">
       <DependentUpon>fTableManager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MyReport.rdlc" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -141,6 +124,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BussinessLayer\BussinessLayer.csproj">
+      <Project>{c063a1e6-c75e-46ee-a1fd-155794728cba}</Project>
+      <Name>BussinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataLayer\DataLayer.csproj">
+      <Project>{7C71EA92-7DAE-49F6-867C-6AAB63F6507E}</Project>
+      <Name>DataLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataTransferObject\DataTransferObject.csproj">
+      <Project>{b95c5552-ef37-4290-bbd3-6383231c34c1}</Project>
+      <Name>DataTransferObject</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

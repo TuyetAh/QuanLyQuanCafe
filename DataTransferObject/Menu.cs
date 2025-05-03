@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
     public class Menu
     {
 
-        public Menu (string foodName, int count, float price, float totalPrice=0)
+        public Menu(string foodName, int count, float price, float totalPrice = 0)
         {
             this.FoodName = foodName;
             this.Count = count;

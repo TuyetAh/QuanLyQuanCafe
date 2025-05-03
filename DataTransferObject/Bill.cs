@@ -6,11 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
     public class Bill
     {
-        public Bill(int id, DateTime? dateCheckIn, DateTime? dateCheckOut, int status, int discount = 0) 
+        public Bill(int id, DateTime? dateCheckIn, DateTime? dateCheckOut, int status, int discount = 0)
         {
             this.ID = id;
             this.DateCheckIn = dateCheckIn;
@@ -24,10 +24,10 @@ namespace QuanLyQuanCafe.DTO
             this.ID = (int)row["id"];
             this.DateCheckIn = (DateTime?)row["dateCheckIn"];
             var dateCheckOutTemp = row["dateCheckOut"];
-            if(dateCheckOutTemp.ToString() != "")
+            if (dateCheckOutTemp.ToString() != "")
                 this.DateCheckOut = (DateTime?)dateCheckOutTemp;
 
-            this.Status= (int)row["status"];
+            this.Status = (int)row["status"];
 
             if (row["discount"].ToString() != "")
                 this.discount = (int)row["discount"];

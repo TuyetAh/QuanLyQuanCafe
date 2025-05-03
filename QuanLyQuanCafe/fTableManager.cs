@@ -1,5 +1,6 @@
-﻿using QuanLyQuanCafe.DAO;
-using QuanLyQuanCafe.DTO;
+﻿using DataLayer;
+using DataTransferObject;
+using BusinessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +12,8 @@ using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using QuanLyQuanCafe; // Nếu fAccountProfile nằm trong namespace này
+using Menu = DataTransferObject.Menu;
 
 namespace QuanLyQuanCafe
 {
@@ -63,8 +66,8 @@ namespace QuanLyQuanCafe
 
             foreach (Table item in tableList)
             {
-                Button btn = new Button() { Width = TableDAO.TableWidth, Height=TableDAO.TableHeight};
-                btn.Text = item.Name + Environment.NewLine +item.Status;
+                Button btn = new Button() { Width = TableDAO.TableWidth, Height = TableDAO.TableHeight };
+                btn.Text = item.Name + Environment.NewLine + item.Status;
                 btn.Click += btn_Click;
                 btn.Tag = item;
 
@@ -85,9 +88,10 @@ namespace QuanLyQuanCafe
         void ShowBill(int id)
         {
             lsvBill.Items.Clear();
-            List<DTO.Menu> listBillInfo = MenuDAO.Instance.GetListMenuByTable(id);
+            MenuService menuService = new MenuService();
+            List<Menu> listBillInfo = menuService.GetListMenuByTable(id);
             float totalPrice = 0;
-            foreach (DTO.Menu item in listBillInfo)
+            foreach (Menu item in listBillInfo)
             {
                 ListViewItem lsvItem = new ListViewItem(item.FoodName.ToString());
                 lsvItem.SubItems.Add(item.Count.ToString());
@@ -99,8 +103,8 @@ namespace QuanLyQuanCafe
             }
             CultureInfo culture = new CultureInfo("vi-VN");
 
-            txbTotalPrice.Text = totalPrice.ToString("c",culture);
-          
+            txbTotalPrice.Text = totalPrice.ToString("c", culture);
+
         }
 
         void LoadComboboxTable(ComboBox cb)
@@ -151,9 +155,9 @@ namespace QuanLyQuanCafe
             f.ShowDialog();
         }
 
-        void f_UpdateAccount(object sender, fAccountProfile.AccountEvent e) // buộc phải dùng "fAccountProfile.AccountEvent e" thay cho "AccountEvent e" vì máy chạy k nổi
+        void f_UpdateAccount(object sender, AccountEvent e)
         {
-            thôngTinTàiKhoảnToolStripMenuItem1.Text = "Thông tin tài khoản (" + e.Acc.DisplayName + ")";
+            thôngTinTàiKhoảnToolStripMenuItem1.Text = "Thông tin tài khoản (" + e.Account.DisplayName + ")";
         }
 
         private void adminToolStripMenuItem_Click(object sender, EventArgs e)
@@ -199,14 +203,14 @@ namespace QuanLyQuanCafe
             int idBill = BillDAO.Instance.GetUncheckBillIDByTableID(table.ID);
             int foodID = (cbFood.SelectedItem as Food).ID;
             int count = (int)nmFood.Value;
-            if(idBill == -1)
+            if (idBill == -1)
             {
                 BillDAO.Instance.InsertBill(table.ID);
-                BillInfoDAO.Instance.InsertBillInfo(BillDAO.Instance.GetMaxIDBill(), foodID , count);
+                BillInfoDAO.Instance.InsertBillInfo(BillDAO.Instance.GetMaxIDBill(), foodID, count);
             }
             else
             {
-                BillInfoDAO.Instance.InsertBillInfo(idBill , foodID , count);
+                BillInfoDAO.Instance.InsertBillInfo(idBill, foodID, count);
 
             }
             ShowBill(table.ID);

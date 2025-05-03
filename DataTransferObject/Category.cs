@@ -5,19 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuanLyQuanCafe.DTO
+namespace DataTransferObject
 {
-  public class Category
+    public class Category
     {
-        public Category(int id, string name)     
+        public Category(int id, string name)
         {
-            this.ID= id;
-            this.Name= name;
+            this.ID = id;
+            this.Name = name;
         }
         public Category(DataRow row)
         {
-            this.ID= (int)row["id"];
-            this.Name= row["name"].ToString();
+            this.ID = (int)row["id"];
+            this.Name = row["name"].ToString();
         }
         private string name;
         public string Name
