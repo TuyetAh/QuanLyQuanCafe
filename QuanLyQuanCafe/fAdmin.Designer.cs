@@ -149,6 +149,7 @@
             this.panel44 = new System.Windows.Forms.Panel();
             this.dtgvAccount = new System.Windows.Forms.DataGridView();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.btnExport = new System.Windows.Forms.Button();
             this.dtgvReport = new System.Windows.Forms.DataGridView();
             this.btnTotalBills = new System.Windows.Forms.Button();
             this.btnTopFoods = new System.Windows.Forms.Button();
@@ -156,7 +157,6 @@
             this.dtpkTo = new System.Windows.Forms.DateTimePicker();
             this.dtpkFrom = new System.Windows.Forms.DateTimePicker();
             this.quanLyQuanCafeDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.btnExport = new System.Windows.Forms.Button();
             this.tcBill.SuspendLayout();
             this.tpBill.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -936,10 +936,8 @@
             // 
             this.txbCategoryID.Location = new System.Drawing.Point(155, 12);
             this.txbCategoryID.Name = "txbCategoryID";
-            this.txbCategoryID.ReadOnly = true;
             this.txbCategoryID.Size = new System.Drawing.Size(183, 27);
             this.txbCategoryID.TabIndex = 2;
-            this.txbCategoryID.UseSystemPasswordChar = true;
             // 
             // label12
             // 
@@ -970,6 +968,7 @@
             this.btnShowCategory.TabIndex = 3;
             this.btnShowCategory.Text = "Xem";
             this.btnShowCategory.UseVisualStyleBackColor = true;
+            this.btnShowCategory.Click += new System.EventHandler(this.btnShowCategory_Click);
             // 
             // btnEditCategory
             // 
@@ -979,6 +978,7 @@
             this.btnEditCategory.TabIndex = 2;
             this.btnEditCategory.Text = "Sửa";
             this.btnEditCategory.UseVisualStyleBackColor = true;
+            this.btnEditCategory.Click += new System.EventHandler(this.btnEditCategory_Click);
             // 
             // btnDeleteCategory
             // 
@@ -988,6 +988,7 @@
             this.btnDeleteCategory.TabIndex = 1;
             this.btnDeleteCategory.Text = "Xóa";
             this.btnDeleteCategory.UseVisualStyleBackColor = true;
+            this.btnDeleteCategory.Click += new System.EventHandler(this.btnDeleteCategory_Click);
             // 
             // btnAddCategory
             // 
@@ -997,6 +998,7 @@
             this.btnAddCategory.TabIndex = 0;
             this.btnAddCategory.Text = "Thêm";
             this.btnAddCategory.UseVisualStyleBackColor = true;
+            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
             // 
             // panel31
             // 
@@ -1111,7 +1113,6 @@
             this.txbTableID.ReadOnly = true;
             this.txbTableID.Size = new System.Drawing.Size(183, 27);
             this.txbTableID.TabIndex = 2;
-            this.txbTableID.UseSystemPasswordChar = true;
             // 
             // label14
             // 
@@ -1142,6 +1143,7 @@
             this.btnShowTable.TabIndex = 3;
             this.btnShowTable.Text = "Xem";
             this.btnShowTable.UseVisualStyleBackColor = true;
+            this.btnShowTable.Click += new System.EventHandler(this.btnShowTable_Click);
             // 
             // btnEditTable
             // 
@@ -1151,6 +1153,7 @@
             this.btnEditTable.TabIndex = 2;
             this.btnEditTable.Text = "Sửa";
             this.btnEditTable.UseVisualStyleBackColor = true;
+            this.btnEditTable.Click += new System.EventHandler(this.btnEditTable_Click);
             // 
             // btnDeleteTable
             // 
@@ -1160,6 +1163,7 @@
             this.btnDeleteTable.TabIndex = 1;
             this.btnDeleteTable.Text = "Xóa";
             this.btnDeleteTable.UseVisualStyleBackColor = true;
+            this.btnDeleteTable.Click += new System.EventHandler(this.btnDeleteTable_Click);
             // 
             // btnAddTable
             // 
@@ -1169,6 +1173,7 @@
             this.btnAddTable.TabIndex = 0;
             this.btnAddTable.Text = "Thêm";
             this.btnAddTable.UseVisualStyleBackColor = true;
+            this.btnAddTable.Click += new System.EventHandler(this.btnAddTable_Click);
             // 
             // panel37
             // 
@@ -1394,6 +1399,18 @@
             this.tabPage6.Text = "Thống kê & Báo cáo";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // btnExport
+            // 
+            this.btnExport.BackColor = System.Drawing.Color.Chartreuse;
+            this.btnExport.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.btnExport.Location = new System.Drawing.Point(743, 18);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(96, 45);
+            this.btnExport.TabIndex = 6;
+            this.btnExport.Text = "Xuất File";
+            this.btnExport.UseVisualStyleBackColor = false;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // dtgvReport
             // 
             this.dtgvReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -1447,18 +1464,6 @@
             this.dtpkFrom.Name = "dtpkFrom";
             this.dtpkFrom.Size = new System.Drawing.Size(200, 27);
             this.dtpkFrom.TabIndex = 0;
-            // 
-            // btnExport
-            // 
-            this.btnExport.BackColor = System.Drawing.Color.Chartreuse;
-            this.btnExport.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.btnExport.Location = new System.Drawing.Point(743, 18);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(96, 45);
-            this.btnExport.TabIndex = 6;
-            this.btnExport.Text = "Xuất File";
-            this.btnExport.UseVisualStyleBackColor = false;
-            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
             // fAdmin
             // 

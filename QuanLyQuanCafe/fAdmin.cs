@@ -50,6 +50,18 @@ namespace QuanLyQuanCafe
             LoadCategoryIntoComboBox(cbFoodCategory);
             AddFoodBinding();
             AddAccountBinding();
+
+
+            //test 
+            dtgvCategory.DataSource = categoryList;
+            LoadListCategory();
+            AddCategoryBinding();
+
+            //bàn ăn
+            LoadTableList();
+            AddTableBinding();
+
+
         }
 
         void AddAccountBinding()
@@ -62,6 +74,7 @@ namespace QuanLyQuanCafe
         void LoadAccount()
         {
             accountList.DataSource = AccountDAO.Instance.GetListAcount();
+            dtgvAccount.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         void LoadDateTimePickerBill()
@@ -93,6 +106,7 @@ namespace QuanLyQuanCafe
         void LoadListFood()
         {
             foodList.DataSource = FoodDAO.Instance.GetListFood();
+            dtgvFood.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         void AddAccount(string userName, string displayName, int type)
@@ -159,6 +173,58 @@ namespace QuanLyQuanCafe
 
         }
 
+        //test
+        void LoadListCategory()
+        {
+            categoryList.DataSource = CategoryDAO.Instance.GetListCategory();
+            dtgvCategory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+        }
+
+        void AddCategoryBinding()
+        {
+            txbCategoryID.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource, "ID", true, DataSourceUpdateMode.Never));
+            txbCategoryName.DataBindings.Add(new Binding("Text", dtgvCategory.DataSource, "Name", true, DataSourceUpdateMode.Never));
+        }
+        void AddCategory(string name)
+        {
+            if (CategoryDAO.Instance.InsertCategory(name))
+            {
+                MessageBox.Show("Thêm danh mục thành công");
+                LoadListCategory();
+            }
+            else
+            {
+                MessageBox.Show("Thêm danh mục thất bại");
+            }
+        }
+
+        void EditCategory(int id, string name)
+        {
+            if (CategoryDAO.Instance.UpdateCategory(id, name))
+            {
+                MessageBox.Show("Sửa danh mục thành công");
+                LoadListCategory();
+            }
+            else
+            {
+                MessageBox.Show("Sửa danh mục thất bại");
+            }
+        }
+
+        void DeleteCategory(int id)
+        {
+            if (CategoryDAO.Instance.DeleteCategory(id))
+            {
+                MessageBox.Show("Xóa danh mục thành công");
+                LoadListCategory();
+            }
+            else
+            {
+                MessageBox.Show("Xóa danh mục thất bại");
+            }
+        }
+//test nha cos gif sua sau
         #endregion
 
         #region events
@@ -535,5 +601,110 @@ namespace QuanLyQuanCafe
         }
 
 
+
+
+        //test
+        BindingSource categoryList = new BindingSource();
+
+        private void btnAddCategory_Click(object sender, EventArgs e)
+        {
+            string name = txbCategoryName.Text;
+            AddCategory(name);
+        }
+
+        private void btnEditCategory_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txbCategoryID.Text);
+            string name = txbCategoryName.Text;
+            EditCategory(id, name);
+        }
+
+        private void btnDeleteCategory_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txbCategoryID.Text);
+            DeleteCategory(id);
+        }
+
+        private void btnShowCategory_Click(object sender, EventArgs e)
+        {
+            LoadListCategory();
+        }
+
+        // Bàn ăn
+        void LoadTableList()
+        {
+            dtgvTable.DataSource = TableDAO.Instance.GetListTable();
+            dtgvTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+        }
+
+        void AddTableBinding()
+        {
+            txbTableID.DataBindings.Add(new Binding("Text", dtgvTable.DataSource, "ID", true, DataSourceUpdateMode.Never));
+            txbTableName.DataBindings.Add(new Binding("Text", dtgvTable.DataSource, "Name", true, DataSourceUpdateMode.Never));
+            cbTableStatus.DataBindings.Add(new Binding("Text", dtgvTable.DataSource, "Status", true, DataSourceUpdateMode.Never));
+        }
+
+        void AddTable(string name)
+        {
+            if (TableDAO.Instance.InsertTable(name))
+            {
+                MessageBox.Show("Thêm bàn thành công");
+                LoadTableList();
+            }
+            else
+            {
+                MessageBox.Show("Thêm bàn thất bại");
+            }
+        }
+
+        void EditTable(int id, string name)
+        {
+            if (TableDAO.Instance.UpdateTable(id, name))
+            {
+                MessageBox.Show("Sửa bàn thành công");
+                LoadTableList();
+            }
+            else
+            {
+                MessageBox.Show("Sửa bàn thất bại");
+            }
+        }
+
+        void DeleteTable(int id)
+        {
+            if (TableDAO.Instance.DeleteTable(id))
+            {
+                MessageBox.Show("Xóa bàn thành công");
+                LoadTableList();
+            }
+            else
+            {
+                MessageBox.Show("Xóa bàn thất bại");
+            }
+        }
+
+        private void btnAddTable_Click(object sender, EventArgs e)
+        {
+            string name = txbTableName.Text;
+            AddTable(name);
+        }
+
+        private void btnEditTable_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txbTableID.Text);
+            string name = txbTableName.Text;
+            EditTable(id, name);
+        }
+
+        private void btnDeleteTable_Click(object sender, EventArgs e)
+        {
+            int id = Convert.ToInt32(txbTableID.Text);
+            DeleteTable(id);
+        }
+
+        private void btnShowTable_Click(object sender, EventArgs e)
+        {
+            LoadTableList();
+        }
     }
 }

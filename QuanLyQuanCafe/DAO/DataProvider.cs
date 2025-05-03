@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace QuanLyQuanCafe.DAO
 {
@@ -54,29 +55,38 @@ namespace QuanLyQuanCafe.DAO
         public int ExecuteNonQuery(string query, object[] parameter = null)
         {
             int data = 0;
+
             using (SqlConnection connection = new SqlConnection(connectionSTR))
             {
                 connection.Open();
                 SqlCommand command = new SqlCommand(query, connection);
+
                 if (parameter != null)
                 {
-                    string[] listPara = query.Split(' ');
+                    // Dùng Regex để tìm tất cả biến bắt đầu bằng @
+                    MatchCollection matches = Regex.Matches(query, @"@\w+");
                     int i = 0;
-                    foreach (string item in listPara)
+
+                    foreach (Match match in matches)
                     {
-                        if (item.Contains('@'))
+                        string paramName = match.Value;
+
+                        // Tránh thêm trùng param
+                        if (!command.Parameters.Contains(paramName))
                         {
-                            command.Parameters.AddWithValue(item, parameter[i]);
+                            command.Parameters.AddWithValue(paramName, parameter[i]);
                             i++;
                         }
                     }
                 }
+
                 data = command.ExecuteNonQuery();
                 connection.Close();
-
             }
+
             return data;
         }
+
 
 
         public object ExecuteScalar(string query, object[] parameter = null)
